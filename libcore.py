@@ -8,6 +8,7 @@ from torchvision.transforms import functional as Fv
 from matplotlib import pyplot as plt
 from PIL import Image
 
+import numpy as np
 import pywt 
 
 def imshow_img(img):
