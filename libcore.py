@@ -63,3 +63,11 @@ def imshow_actual_size(im_data, img_name):
     
     #fig.savefig(img_name, dpi=dpi, transparent=True)
     plt.show()   
+
+# n: number for stack
+# d=1: dim
+def upInChannel(filters, in_channel, d):
+    tmp = []
+    for i in range(in_channel):
+        tmp.append(filters)
+    return torch.stack(tmp, dim=d)
