@@ -21,6 +21,13 @@ def imshow_tensor(tensor):
     plt.axis('off')
     plt.show()    
 
+def imshow_tensor_interpolate(ts, scale):
+    ts_interpolate = F.interpolate(ts.clone(), (32,32))
+    print(ts_interpolate.shape)
+    plt.imshow(ts_interpolate.squeeze(0).squeeze(0).numpy())
+    plt.axis('off')
+    plt.show()
+    
 def imshow_actual_size(im_data, img_name):
     dpi = 80
     
