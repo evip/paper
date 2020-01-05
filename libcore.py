@@ -20,3 +20,37 @@ def imshow_tensor(tensor):
     plt.imshow(tensor.squeeze(0).squeeze(0).numpy())
     plt.axis('off')
     plt.show()    
+
+def imshow_actual_size(im_data, img_name):
+    dpi = 80
+    
+    height, width =  im_data.shape
+    
+    # What size does the figure need to be in inches to fit the image?
+    figsize = width / float(dpi), height / float(dpi)
+    
+    # Create a figure of the right size with one axes that takes up the full figure
+    fig = plt.figure(figsize=figsize)
+    ax = fig.add_axes([0, 0, 1, 1])
+    
+    # Hide spines, ticks, etc.
+    ax.axis('off')
+    
+    # Display the image.
+    ax.imshow(im_data, interpolation='nearest')
+    
+    # Add something...
+    #ax.annotate('Look at This!', xy=(590, 650), xytext=(500, 500),
+# =============================================================================
+#     ax.annotate('Look at This!', xy=(100, 100), xytext=(70, 70),
+#                 color='cyan', size=24, ha='right',
+#                 arrowprops=dict(arrowstyle='fancy', fc='cyan', ec='none'))
+# =============================================================================
+    
+    # Ensure we're displaying with square pixels and the right extent.
+    # This is optional if you haven't called `plot` or anything else that might
+    # change the limits/aspect.  We don't need this step in this case.
+    ax.set(xlim=[0, width], ylim=[height, 0], aspect=1)
+    
+    #fig.savefig(img_name, dpi=dpi, transparent=True)
+    plt.show()   
