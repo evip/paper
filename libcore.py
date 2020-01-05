@@ -28,6 +28,7 @@ def imshow_tensor_interpolate(ts, scale):
     plt.axis('off')
     plt.show()
     
+# # https://stackoverflow.com/questions/34768717/matplotlib-unable-to-save-image-in-same-resolution-as-original-image/34769840
 def imshow_actual_size(im_data, img_name):
     dpi = 80
     
