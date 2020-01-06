@@ -38,12 +38,14 @@ filter_ts = torch.tensor([
 # =============================================================================
         
     ])
-    
+# show image
+imshow_tensor(data)
+
+######### nn.Conv2D ##########################
 # [1,1,5,5]    
 filter_tensor = filter_ts[None, None]
 # [1,1,158, 158]
 result_conv2d = conv2d(data, filter_tensor)
-imshow_tensor(data)
 imshow_tensor(result_conv2d)
 
 ############ Fourier  ########################
@@ -57,6 +59,5 @@ H = h/np.sum(h)
 result_fourier = np.real(ifft2(fft2(img_tensor.squeeze(0)) * fft2(H)))
 imshow_img(result_fourier)
 
-result = result_fourier - result_conv2d.squeeze(0).squeeze(0).numpy()
 
 
