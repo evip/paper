@@ -9,6 +9,7 @@ J = 4
 L = 8
 filters_set = filter_bank(M, M, J, L=L)
 
+band_pass = filters_set['psi']
 low_pass = filters_set['phi']
 
 ## Low-pass ###
@@ -23,9 +24,9 @@ for i in range(J):
     filter_c = np.abs(filter_c)
     #print('filter: ', filter_c.shape)
 
-    filter_value = 'filter_scatter/lowpass/matrix_filter_lowpass_Level_{}.pt'.format(i)
+    filter_value = 'filter_scatter/lowpass/matrix_filter_lowpass_Level_{}.pt'.format(i+1)
     torch.save(filter_c, filter_value)    
     
-    name_file = 'filter_scatter/lowpass/filter_lowpass_Level_{}'.format(i)    
+    name_file = 'filter_scatter/lowpass/filter_lowpass_Level_{}'.format(i+1)    
     imshow_actual_size(filter_c, name_file)
     
