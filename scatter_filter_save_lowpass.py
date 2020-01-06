@@ -9,7 +9,6 @@ J = 4
 L = 8
 filters_set = filter_bank(M, M, J, L=L)
 
-band_pass = filters_set['psi']
 low_pass = filters_set['phi']
 
 ## Low-pass ###
