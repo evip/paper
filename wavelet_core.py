@@ -243,28 +243,7 @@ class ScatteringEqualNet_Batch_Good(nn.Module):
         #return output
 
 
-
-
-
-# =============================================================================
-# from kymatio import Scattering2D
-# import math        
-# 
-# scattering = scattering_train = Scattering2D(J=2, shape=(64, 64))
-# model = Scattering2dNet()
-# 
-# x = torch.rand(1,3,64,64)
-# x_scatter = scattering(x)
-# outp = model(x_scatter)
-# print(outp)
-# =============================================================================
-
-#two_fc_classifier = TwoFullNet(100)
-#two_fc_classifier = TwoConvTwoFullNet()    
 two_fc_classifier = ScatteringEqualNet_Batch_Good()
-
-#two_fc_classifier = Scattering2dNet()
-
 if MU.use_cuda : two_fc_classifier.cuda()
 evaluate_model(two_fc_classifier)
 
