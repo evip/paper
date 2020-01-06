@@ -1,26 +1,6 @@
-import torch
-from torch.nn import functional as F
-from torchvision.transforms import functional as Fv
-import numpy as np
-from numpy.fft import fft2, ifft2
-import sys 
+from libcore import *
 
-np.set_printoptions(threshold=sys.maxsize)
-
-from matplotlib import pyplot as plt
-from PIL import Image
 name = 'heart_big.png'
-
-def imshow_img(img):
-    plt.imshow(img)
-    plt.axis('off')
-    plt.show()
-
-#[b,c, m, n]
-def imshow_tensor(ts):
-    plt.imshow(ts.squeeze(0).squeeze(0))
-    plt.axis('off')
-    plt.show()
 
 def conv2d(data, filters):
     return F.conv2d(data, filters, padding=2)
