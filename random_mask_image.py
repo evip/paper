@@ -1,10 +1,5 @@
 # https://twitter.com/francoisfleuret/status/1208342223340875776?s=20
-
-import torch
-import timeit
-import numpy as np
-from PIL import Image
-from matplotlib import pyplot as plt
+from libcore import *
 
 img = np.array(Image.open('chris.jpg'))
 plt.imshow(img)
