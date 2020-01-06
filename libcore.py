@@ -16,6 +16,7 @@ from numpy.fft import fft2, ifft2
 import io
 import pywt 
 
+import timeit
 from time import process_time
 
 def imshow_img(img):
