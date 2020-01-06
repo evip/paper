@@ -1,17 +1,8 @@
 from __future__ import print_function
-import torch
-import torch.nn as nn
-import torch.nn.functional as F
-import torch.optim as optim
-import torchvision
-from torchvision import datasets, transforms, utils
-from torch.autograd import Variable
+
 import itertools
 
-# Performance monitoring
-from time import process_time
-import matplotlib.pyplot as plt
-import numpy as np
+
 
 # Disable warnings from the Scattering transform...
 import warnings
@@ -21,13 +12,6 @@ warnings.filterwarnings("ignore")
 
 from model_utils import AttrDict, show, generate_image, train, test, evaluate_model, display_classified_images
 import model_utils as MU
-
-# =============================================================================
-# from model_utils_wavelet import AttrDict, show, generate_image, train, test, evaluate_model, display_classified_images
-# import model_utils_wavelet as MU
-# =============================================================================
-
-#MU.display_parameters()
 
 MU.class_names = ['cr', 'gg', 'in', 'pa', 'ps', 'rp', 'rs', 'sc', 'sp']
 #kwargs = {'num_workers': 0, 'pin_memory': False} if MU.use_cuda else {}
@@ -70,93 +54,6 @@ MU.train_loader = torch.utils.data.DataLoader( MU.train_dataset,
 MU.test_loader  = torch.utils.data.DataLoader( MU.test_dataset,
     batch_size=MU.args.test_batch_size, shuffle=True, 
     )
-
-
-class TwoFullNet(nn.Module) :
-    """
-    Implements a simplistic perceptron with 3 layers :
-    - one input, of size 28x28 (MNIST dataset)
-    - one hidden, of size N
-    - one output, of size 10 (number of classes)
-    There is no built-in regularization, and we model the two
-    transformations input->hidden and hidden->output as
-    Linear->ReLu and Linear->SoftMax operators,
-    i.e. as Fully connected computational graphs.
-    The trainable parameters are the weights of the matrices
-    (+ biases) involved in the "Linear" (Affine, really) operators.
-    """
-    def __init__(self, N) :
-        "Defines the parameters of the model."
-        super(TwoFullNet, self).__init__()
-        
-        # Linear (i.e. fully connected) layer, a matrix of size (28*28)xN
-        self.fc1        = nn.Linear(3*MU.imgsize[0]*MU.imgsize[1], N)
-        # Linear (i.e. fully connected) layer, a matrix of size Nx10 (10 classes as output)
-        self.fc2        = nn.Linear( N, 9)
-
-    def forward(self, x) :
-        """
-        Apply the model to some input data x.
-        You can think of x as an image of size 28x28, but it is
-        actually an Mx28x28 tensor, where M is the size of the
-        mini-batch.
-        """
-        x = x.view(-1, 3 * MU.imgsize[0]*MU.imgsize[1]) # Turns our image into a vector
-        x = self.fc1( x )     # Linear transformation
-        x = F.relu(   x )     # Non-linearity (Relu = "positive part", a typical choice)
-        x = self.fc2( x )     # Second linear transformation
-        # Really, the softmax is the classification label, but for numerical stability,
-        # all computations are made in the log domain
-        return F.log_softmax(x) 
-
-
-class TwoConvTwoFullNet(nn.Module) :
-    """
-    Implements a trainable model which is the concatenation
-    of two convolutional layers + two fully connected layers.
-    The choice of architecture here was mostly done at random,
-    for illustrative purpose...
-    """
-    def __init__(self) :
-        super(TwoConvTwoFullNet, self).__init__()
-        # First conv operator : 30 1x5x5-filters + 30 bias constants 
-        # which map an image of size WxH to a 3D volume of size 30xWxH
-        # (modulo a padding argument)
-        self.conv1      = nn.Conv2d( 3, 30, kernel_size=5)
-        # Second conv operator : 30 10x5x5-filters + 30 bias constants
-        # which map a 3D volume of size 30xWxH to a 3D volume of size 30xWxH
-        # (modulo a padding argument)
-        self.conv2      = nn.Conv2d(30, 30, kernel_size=5, groups=6)
-        # Dropout layer : probabilistic regularization trick
-        self.conv2_drop = nn.Dropout2d()
-        # Linear (i.e. fully connected) layer, a matrix of size (30*11*11)x100
-        self.fc1        = nn.Linear(30*13*13, 100)
-        # Linear (i.e. fully connected) layer, a matrix of size 100x10 (10 classes as output)
-        self.fc2        = nn.Linear( 100, 9)
-
-    def forward(self, x) :
-        "Stacks up the network layers, with the simplistic relu nonlinearity in-between."
-        x = F.max_pool2d(F.relu(                self.conv1(x)),  2)
-        x = F.max_pool2d(F.relu(self.conv2_drop(self.conv2(x))), 2)
-        # Up to this point, the treatment of x has been roughly translation-invariant:
-        # Conv2d operators and ReLu nonlinearities are completely T-I,
-        # whereas the subsampling "max_pool2d" operators are 
-        # As we believe that the large-scale information should not be completely
-        # discarded (some features such as heels just happen to always be located in the bottom 
-        # right corners of our images...), we end our pipeline (transform) with 
-        # a regular two-layers perceptrons that processes the reduced image x
-        # as a features vector.
-        
-        # At this point, x is a 3D volume of size 30xWxH.
-        # Due to convolution truncatures and subsamplings, 
-        # we have W=H=11, so the following operation...
-        x = x.view(-1, 30*13*13)    # Turns it into a vector
-        x = F.relu(   self.fc1(x))  # 1x100 vector
-        x = F.dropout(x, training=self.training) # Add a dropout pass during training only
-        x = self.fc2( x)            # 1x10 vector
-        # Really, the softmax is the classification label, but for numerical stability,
-        # all computations are made in the log domain
-        return F.log_softmax(x) 
 
 
 
