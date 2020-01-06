@@ -9,6 +9,7 @@ from matplotlib import pyplot as plt
 from PIL import Image
 
 import numpy as np
+from numpy.fft import fft2, ifft2
 import io
 import pywt 
 
