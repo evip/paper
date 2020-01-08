@@ -79,3 +79,41 @@ def upInChannel(filters, in_channel, d):
     for i in range(in_channel):
         tmp.append(filters)
     return torch.stack(tmp, dim=d)
+
+num_classes = 9
+class_names = ['cr', 'gg', 'in', 'pa', 'ps', 'rp', 'rs', 'sc', 'sp']
+imgsize = (64,64)
+data_dir = "steel/"
+
+data_transforms = {
+    'train': transforms.Compose(
+            
+            [#transforms.Resize([28,28],2),
+             transforms.ToTensor(),                                 
+             #transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
+            ]
+     ),
+    
+    'val': transforms.Compose(
+            [transforms.ToTensor(),
+             #transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
+            ]
+     )
+}
+
+batch_size_train = 32
+batch_size_test = 256
+validation_split = .20 # 20%
+num_worker = 1
+
+
+# Chia tap train va test doc lap
+dataset = torchvision.datasets.ImageFolder(data_dir, data_transforms['train'])
+train_size = int((1-validation_split) * len(dataset))
+test_size = len(dataset) - train_size
+data_train, data_test = torch.utils.data.random_split(dataset, [train_size, test_size])
+
+data_train_loader = DataLoader(data_train, batch_size=batch_size_train, shuffle=True)
+data_test_loader = DataLoader(data_test, batch_size=batch_size_test)
+
+
