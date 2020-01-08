@@ -8,25 +8,6 @@ data = img_tensor[None]
 # show image
 imshow_tensor(data)
 
-######### nn.functional.conv2D ##########################
-def conv2d(data, filters):
-    return F.conv2d(data, filters, padding=2)
-
-filter_ts = torch.tensor([
-        [0.,.7,.8,.7,0.],
-        [.7,1.,1.,1.,.7],
-        [.8,1.,1.,1.,.8],
-        [.7,1.,1.,1.,.7],
-        [0.,.7,.8,.7,0.],
-    ])
-    
-# [1,1,5,5]    
-filter_tensor = filter_ts[None, None]
-t_start_conv2d = time.time()
-result_conv2d = conv2d(data, filter_tensor)
-t_elapsed_conv2d = time.time() - t_start_conv2d
-# show result of Convolution Operator
-imshow_tensor(result_conv2d)
 
 
 ############ Fourier  ########################
@@ -49,6 +30,29 @@ result_fourier = np.real(ifft2(fft2(img_tensor.squeeze(0)) * fft2(H)))
 t_elapsed_fourier = time.time() - t_start_fourier
 # show result of convolution us fourier
 imshow_img(result_fourier)
+
+
+
+
+######### nn.functional.conv2D ##########################
+def conv2d(data, filters):
+    return F.conv2d(data, filters, padding=2)
+
+filter_ts = torch.tensor([
+        [0.,.7,.8,.7,0.],
+        [.7,1.,1.,1.,.7],
+        [.8,1.,1.,1.,.8],
+        [.7,1.,1.,1.,.7],
+        [0.,.7,.8,.7,0.],
+    ])
+    
+# [1,1,5,5]    
+filter_tensor = filter_ts[None, None]
+t_start_conv2d = time.time()
+result_conv2d = conv2d(data, filter_tensor)
+t_elapsed_conv2d = time.time() - t_start_conv2d
+# show result of Convolution Operator
+imshow_tensor(result_conv2d)
 
 
 ################ CPU nn.Conv2D ########################
