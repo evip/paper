@@ -5,6 +5,7 @@ from torch.nn import functional as F
 
 import torchvision
 from torchvision import datasets, transforms, utils
+from torch.utils.data import DataLoader
 from torchvision.transforms import functional as Fv
 
 from matplotlib import pyplot as plt
