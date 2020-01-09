@@ -202,7 +202,7 @@ model_wavelet_L4.conv2.weight = torch.nn.Parameter(w_L1_filter, requires_grad=Fa
 model_wavelet_L4.conv3.weight = torch.nn.Parameter(w_L1_filter, requires_grad=False)
 model_wavelet_L4.conv4.weight = torch.nn.Parameter(w_L1_filter, requires_grad=False)
 
-# Test wavelet L2 for 1 image
+# Test wavelet L4 for 1 image
 img_out = model_wavelet_L4(img_tensor)
 print(img_out.shape)
 for k1 in range(192):
