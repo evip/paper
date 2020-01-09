@@ -25,9 +25,9 @@ inv_filters = torch.stack([rec_lo.unsqueeze(0)*rec_lo.unsqueeze(1),
 
 w_L1_filter = upInChannel(filters, 1,1)
 #print(w_L1_filter.size(2))
-#w_L2_filter = upInChannel(filters)
 
 
+###################### Wavelet Level 1 ########################
 class WaveletConvL1(torch.nn.Module):
     def __init__(self):
         super(WaveletConvL1, self).__init__()
@@ -160,7 +160,7 @@ class WaveletConvL3(torch.nn.Module):
 # =============================================================================
         
     
-###################### Wavelet Level 2 ########################
+###################### Wavelet Level 4 ########################
 class WaveletConvL4(torch.nn.Module):
     def __init__(self):
         super(WaveletConvL4, self).__init__()
