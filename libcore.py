@@ -20,6 +20,8 @@ import pywt
 import timeit
 from time import process_time
 
+device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
+
 def imshow_img(img):
     plt.imshow(img)
     plt.axis('off')
