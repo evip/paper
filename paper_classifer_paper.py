@@ -39,3 +39,20 @@ class OurLinear_I1(nn.Module):
         return 'in_features={}, out_features={}, bias={}'.format(
             self.in_features, self.out_features, self.bias is not None
         )
+
+class Classifer_paper(nn.Module):
+    def __init__(self, feature_num, class_num):
+        super(Classifer_paper, self).__init__()
+        self.feature_num = feature_num
+        self.class_num = class_num
+
+        self.classifer = nn.Sequential(OrderedDict([
+                ('linear1', OurLinear_I1(self.feature_num, 1024)),
+                ('linear2', OurLinear_I1(1024, 512)),
+                ('linear3', OurLinear_I1(512, self.class_num))
+                ]))
+        
+    
+    def forward(self, x):
+        return self.classifer(x)
+    
